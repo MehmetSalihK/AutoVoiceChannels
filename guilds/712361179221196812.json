@@ -1,0 +1,30 @@
+{
+ "aliases":{},
+ "auto_channels":{
+  "712364716759973949":{
+   "above":false,
+   "secondaries":{
+    "712375824971464796":{
+     "creator":428233517483425793,
+     "jc":712375858211586078,
+     "msgs":712375828138426440,
+     "priv":true,
+     "tc":712375828138426440,
+     "tcr":712375827303760013
+    }
+   },
+   "template":"@@game_name@@ {{ROLE:601025860614750229 ?? {{ROLE:615086491235909643??[UK] // {{ROLE:607913610139664444??[DE] // [EU]}}}}}}"
+  }
+ },
+ "channel_name_template":"## [@@game_name@@]",
+ "enabled":true,
+ "general":"General",
+ "guild_name":"Crew",
+ "last_activity":1589914032,
+ "last_channel":712361179825307661,
+ "left":false,
+ "prefix":"!",
+ "requiredrole":"",
+ "server_contact":428233517483425793,
+ "text_channels":true
+}
