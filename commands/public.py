@@ -21,13 +21,13 @@ async def execute(ctx, params):
         for s, sv in pv['secondaries'].items():
             if s == vc.id:
                 if 'priv' not in sv or not sv['priv']:
-                    return False, ("Your channel is already public. "
-                                   "Use `{}private` to make it private instead.".format(ctx['print_prefix']))
+                    return False, ("Kanalınız zaten herkese açık. "
+                                   "Bunun yerine özel yapmak için `{}özel` kullanın.".format(ctx['print_prefix']))
                 try:
                     await vc.set_permissions(guild.default_role, connect=True)
                 except discord.errors.Forbidden:
-                    return False, ("I don't have permission to do that."
-                                   "Please make sure I have the *Manage Roles* permission in this server and category.")
+                    return False, ("Bunu yapmak için iznim yok."
+                                   "Lütfen bu sunucuda ve kategoride *Rolleri Yönet* iznine sahip olduğumdan emin olun.")
                 settings['auto_channels'][p]['secondaries'][s]['priv'] = False
                 try:
                     jcid = settings['auto_channels'][p]['secondaries'][s]['jc']
@@ -42,9 +42,9 @@ async def execute(ctx, params):
                     if jc:
                         await jc.delete()
                 except discord.errors.Forbidden:
-                    return False, "You channel is now public, but I'm not allowed to delete your **⇩ Join** channel."
-                return True, "Your channel is now public!"
-    return False, "It doesn't seem like you're in a voice channel anymore."
+                    return False, "Kanalınız artık herkese açık, ancak **⇩ Katıl** kanalınızı silme iznim yok."
+                return True, "Kanalınız artık herkese açık!"
+    return False, "Artık bir ses kanalındaymışsınız gibi görünmüyor."
 
 
 command = Cmd(

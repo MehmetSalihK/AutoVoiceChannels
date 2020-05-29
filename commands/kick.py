@@ -40,26 +40,26 @@ async def execute(ctx, params):
     user = utils.get_user_in_channel(name, vc)
 
     if not user:
-        return False, "Can't find any user in your channel with the name \"{}\".".format(name)
+        return False, "Kanalınızda \"{}\" adında herhangi bir kullanıcı bulunamıyor.".format(name)
     if user.id == utils.get_creator_id(settings, vc):
-        return False, "You cannot kick the creator of this channel."
+        return False, "Bu kanalın yaratıcısını tekmeleyemezsiniz."
     if user == author:
-        return False, "Please don't kick yourself :frowning:"
+        return False, "Lütfen kendini tekmeleme :frowning:"
 
     participants = [m for m in vc.members if m not in [author, user] and not m.bot]
     required_votes = floor((len(participants) + 1) / 2) + 1
     try:
         text = (
             "‼ **Votekick** ‼\n"
-            "{initiator} has initiated a votekick against {offender}.{reason}\n\n"
-            "{participants}:\nVote by reacting with ✅ to kick {offender}, "
-            "or ignore this message to vote **No**.\n\n"
-            "You have **2 minutes** to vote. A majority vote ({req}/{tot}) is required.\n"
-            "{initiator} your vote is automatically counted. Votes by users not in your channel will be ignored."
+            "{initiator} karşı bir oylama başlattı {offender}.{reason}\n\n"
+            "{participants}:\n{offender} atmak için ✅ ile tepki vererek oy verin, "
+            "veya oy vermek için bu mesajı dikkate almayın **Hayır**.\n\n"
+            "Oy vermek için **2 dakikanız** var. Çoğunluk oyu ({req}/{tot}) gereklidir.\n"
+            "{initiator} oyunuz otomatik olarak sayılır. Kanalınızda olmayan kullanıcıların oyları yok sayılır."
             "".format(
                 initiator=author.mention,
                 offender=user.mention,
-                reason=(" Reason: **{}**".format(reason) if reason else ""),
+                reason=(" Sebep: **{}**".format(reason) if reason else ""),
                 participants=' '.join([m.mention for m in participants]),
                 req=required_votes,
                 tot=len(participants) + 1
@@ -69,7 +69,7 @@ async def execute(ctx, params):
             text = "..."
         m = await ctx['message'].channel.send(text)
     except discord.errors.Forbidden:
-        return False, "I don't have permission to reply to your kick command."
+        return False, "Kick komutuna cevap verme iznim yok."
     cfg.VOTEKICKS[m.id] = {
         "initiator": author,
         "participants": participants,
@@ -88,7 +88,7 @@ async def execute(ctx, params):
         pass
     await func.server_log(
         guild,
-        "👢 {} (`{}`) initiated a votekick against **{}** (`{}`) in \"**{}**\". Reason: *{}*.".format(
+        "👢 {} (`{}`), \"**{}**\" da **{}** (`{}`) karşısında bir oylama başlattı. Sebep: *{}*.".format(
             func.user_hash(author), author.id, func.user_hash(user), user.id, vc.name, reason
         ), 1, settings)
     return True, "NO RESPONSE"

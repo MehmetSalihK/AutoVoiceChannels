@@ -30,25 +30,25 @@ async def admin_command(cmd, ctx):
     if cmd == 'log':
         logfile = "log{}.txt".format("" if cfg.SAPPHIRE_ID is None else cfg.SAPPHIRE_ID)
         if not os.path.exists(logfile):
-            await channel.send("No log file")
+            await channel.send("log dosyası yok")
             return
         with open(logfile, 'r', encoding="utf8") as f:
             data = f.read()
         data = data[-10000:]  # Drop everything but the last 10k characters to make string ops quicker
-        data = data.replace('  Creating channel for ', '  ✅')
-        data = data.replace('  Deleting ', '    ❌')
-        data = data.replace('  Renaming ⌛  to  ', ' ⏩ ')
-        data = data.replace('  Renaming ', ' 🔄')
-        data = data.replace('  to  ', ' ⏩ ')
+        data = data.replace('  İçin kanal oluşturuluyor ', '  ✅')
+        data = data.replace('  Silme ', '    ❌')
+        data = data.replace('  Olarak yeniden ⌛  adlandırılıyor  ', ' ⏩ ')
+        data = data.replace('  Yeniden adlandırma ', ' 🔄')
+        data = data.replace('  için  ', ' ⏩ ')
         data = data.replace('  CMD Y: ', '  C✔ ')
         data = data.replace('  CMD F: ', '  C✖ ')
-        data = data.replace(" creating channels too quickly", " creating channels too quickly❗❗")
-        data = data.replace(" where I don't have permissions", " where I don't have permissions❗❗")
-        data = data.replace("Traceback (most recent", "❗❗Traceback (most recent")
+        data = data.replace(" çok hızlı kanal oluşturma", " çok hızlı kanal oluşturma❗❗")
+        data = data.replace(" izinlerimin olmadığı yerde", " izinlerimin olmadığı yerde❗❗")
+        data = data.replace("Geri izleme (en yeni", "❗❗Geri izleme (en yeni")
         data = data.replace("discord.errors.", "❗❗discord.errors.")
-        data = data.replace("Remembering channel ", "❗❗Remembering ")
-        data = data.replace("New tickrate is ", "🕐")
-        data = data.replace(", seed interval is ", " 🕐")
+        data = data.replace("Kanal hatırlanıyor ", "❗❗Hatırlamak ")
+        data = data.replace("Yeni onay oranı ", "🕐")
+        data = data.replace(", tohum aralığı ", " 🕐")
         data = data.replace('  ', ' ')  # Reduce indent to save character space
         today = datetime.now(pytz.timezone(cfg.CONFIG['log_timezone'])).strftime("%Y-%m-%d")
         data = data.replace(today, 'T')
@@ -91,13 +91,13 @@ async def admin_command(cmd, ctx):
         mem = psutil.virtual_memory()
         disk = psutil.disk_usage('/')
         await r.edit(content=(
-            "Servers: **{tot_servs}** (A:{active_servs} S:{shards}) \t "
-            "Users: **{users}** \t Channels: **{channels}** \n"
-            "Response time: **{rt}** \t Tick rate: **{tr}** \t Tick time: **{tt}** | **{gtt}**\n"
+            "Sunucular: **{tot_servs}** (A:{active_servs} S:{shards}) \t "
+            "Kullanıcılar: **{users}** \t Channels: **{channels}** \n"
+            "Tepki Süresi: **{rt}** \t Tick rate: **{tr}** \t Tick time: **{tt}** | **{gtt}**\n"
             "CPU: **{cpu}%** \t MEM: **{memg} ({memp}%)** \t DISK: **{diskg} ({diskp}%)**\n"
-            "**Last commit:** {commit}\n"
-            "**Lines of code:** {lines}\n"
-            "**Timings:** \n{timings}".format(
+            "**Son taahhüt:** {commit}\n"
+            "**Kod satırları:** {lines}\n"
+            "**zamanlamalar:** \n{timings}".format(
                 tot_servs=len(guilds),
                 active_servs=utils.num_active_guilds(guilds),
                 shards=utils.num_shards(guilds),
@@ -120,15 +120,15 @@ async def admin_command(cmd, ctx):
         for g in guilds:
             s = func.get_secondaries(g)
             if s:
-                top_guilds.append({"name": g.name,
-                                   "size": len([m for m in g.members if not m.bot]),
+                top_guilds.append({"isim": g.name,
+                                   "boyut": len([m for m in g.members if not m.bot]),
                                    "num": len(s)})
         top_guilds = sorted(top_guilds, key=lambda x: x['num'], reverse=True)[:10]
         r = "**Top Guilds:**"
         for g in top_guilds:
             r += "\n`{}` {}: \t**{}**".format(
-                g['size'],
-                func.esc_md(g['name']),
+                g['boyut'],
+                func.esc_md(g['isim']),
                 g['num']
             )
         r += "\n\n**{}**".format(utils.num_active_channels(guilds))
@@ -150,10 +150,10 @@ async def admin_command(cmd, ctx):
             if pu is not None:
                 pn = pu.name
             else:
-                pn = "Unknown"
+                pn = "Bilinmeyen"
             gn = ""
             if str(p) in auths:
-                for s in auths[str(p)]['servers']:
+                for s in auths[str(p)]['sunucular']:
                     gn += "`{}` ".format(s)
                 if 'extra_gold' in auths[str(p)]:
                     for s in auths[str(p)]['extra_gold']:

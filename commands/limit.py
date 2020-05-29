@@ -4,13 +4,13 @@ from commands.base import Cmd
 
 help_text = [
     [
-        ("Usage:", "<PREFIX><COMMAND>\n"
+        ("kullanım:", "<PREFIX><COMMAND>\n"
                    "<PREFIX><COMMAND> `N`"),
-        ("Description:",
-         "Use when already in a channel - Limit the number of users allowed in your channel to either the current "
-         "number of users, or the specified number.\n\n"
-         "Use *<PREFIX>un<COMMAND>* to remove the limit."),
-        ("Example:", "<PREFIX><COMMAND> 4"),
+        ("Açıklama:",
+         "Zaten bir kanaldayken kullan - Kanalınızda izin verilen kullanıcı sayısını mevcut kanalla sınırlandırın "
+         "kullanıcı sayısı veya belirtilen sayı.\n\n"
+         "Sınırı kaldırmak için *<PREFIX>un<COMMAND>* kullanın."),
+        ("Misal:", "<PREFIX><COMMAND> 4"),
     ]
 ]
 
@@ -19,25 +19,25 @@ async def execute(ctx, params):
     params_str = ' '.join(params)
     guild = ctx['guild']
     settings = ctx['settings']
-    limit = utils.strip_quotes(params_str)
+    sınır = utils.strip_quotes(params_str)
     author = ctx['message'].author
     vc = ctx['voice_channel']
 
-    if limit:
+    if sınır:
         try:
-            limit = abs(int(limit))
+            sınır = abs(int(sınır))
         except ValueError:
-            return False, "`{}` is not a number.".format(limit)
+            return False, "`{}` bir sayı değil.".format(sınır)
     else:
-        limit = len(vc.members)
+        sınır = len(vc.members)
 
-    if limit > 99:
-        return False, "The user limit cannot be higher than 99."
+    if sınır > 99:
+        return False, "Kullanıcı limiti 99'dan fazla olamaz."
 
-    await vc.edit(user_limit=limit)
-    if limit != 0:
+    await vc.edit(user_limit=sınır)
+    if sınır != 0:
         log_msg = "👪 {} (`{}`) set the user limit of \"**{}**\" (`{}`) to {}".format(
-            func.user_hash(author), author.id, func.esc_md(vc.name), vc.id, limit
+            func.user_hash(author), author.id, func.esc_md(vc.name), vc.id, sınır
         )
     else:
         log_msg = "👨‍👩‍👧‍👦 {} (`{}`) removed the user limit of \"**{}**\" (`{}`)".format(

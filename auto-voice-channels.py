@@ -330,7 +330,7 @@ async def check_votekicks(client):
             log("TESTVOTEKICK: {} ({}/{})".format(vk['offender'].display_name, in_favor, vk['required_votes']), guild)
             if in_favor >= vk['required_votes']:
                 to_remove.append(mid)
-                log("Kicked {} from {} ({}/{})".format(vk['offender'].display_name,
+                log("{}'Dan {} ({}/{}) başladı".format(vk['offender'].display_name,
                                                        vk['voice_channel'].name,
                                                        in_favor, len(vk['participants']) + 1), guild)
                 try:
@@ -338,7 +338,7 @@ async def check_votekicks(client):
                 except Exception as e:
                     to_remove.append(mid)
                     await vk['message'].edit(
-                        content="‼ **Votekick** failed - A `{}` error was encountered.".format(type(e).__name__))
+                        content="‼ **Votekick** başarısız oldu - Bir `{}` hatasıyla karşılaşıldı..".format(type(e).__name__))
                     continue
                 banned = True
                 try:
@@ -347,28 +347,28 @@ async def check_votekicks(client):
                     banned = False
                 await vk['message'].edit(content=(
                     "‼ **Votekick** ‼\n"
-                    "{} was **kicked** from {}'s channel{}.{}".format(
+                    "{}, {}kicked {} tekmelendi **.{}".format(
                         vk['offender'].mention, vk['initiator'].mention,
-                        (", but could not be banned from the channel as I don't have the *Manage Roles* permission."
+                        (", ancak *Rolleri Yönet* iznim olmadığından kanaldan yasaklanamadı."
                          if not banned else ""),
-                        ("\nReason: **{}**".format(vk['reason']) if vk['reason'] else ""))
+                        ("\nSebep: **{}**".format(vk['reason']) if vk['reason'] else ""))
                 ))
                 await func.server_log(
                     guild,
-                    "👢 {} (`{}`) has been **kicked** from {}'s channel.".format(
+                    "👢 {} (`{}`), {} kanalından **kicked**.".format(
                         func.user_hash(vk['offender']), vk['offender'].id, vk['initiator']
                     ), 1, utils.get_serv_settings(guild)
                 )
             elif time() > vk['end_time'] + 5:
                 to_remove.append(mid)
-                log("VOTEKICK TIMED OUT: {} ({}/{}) {} {}".format(
+                log("VOTEKICK ZAMANLANDI: {} ({}/{}) {} {}".format(
                     vk['offender'].display_name, in_favor, vk['required_votes'], mid, type(mid)), guild)
-                await vk['message'].edit(content="‼ **Votekick** timed out: Insufficient votes received "
-                                                 "({0}/{1}), required: {2}/{1}.".format(in_favor,
+                await vk['message'].edit(content="‼ **Votekick** zaman aşımına uğradı: Yetersiz oy alındı "
+                                                 "({0}/{1}), gerekli: {2}/{1}.".format(in_favor,
                                                                                         len(vk['participants']) + 1,
                                                                                         vk['required_votes']))
         for mid in to_remove:
-            log("REMOVING VOTEKICK: {} {} len:{} keys:{}".format(
+            log("VOTEKICK'i KALDIRMA: {} {} len:{} keys:{}".format(
                 mid,
                 type(mid),
                 len(cfg.VOTEKICKS),
@@ -407,7 +407,7 @@ async def create_join_channels(client):
             # Unable to create join channel for 120s
             to_remove.append(pc)
             await pcv['text_channel'].send(
-                ":warning: {} For some reason I was unable to create your \"⇩ Join\" channel, please try again later. "
+                ":warning: {} Nedense \"⇩ Katıl\" kanalınızı oluşturamadım, lütfen daha sonra tekrar deneyin. "
                 "Your channel is still private, but there's now no way for anyone to join you. "
                 "Use `{}public` to make it public again."
                 "".format(pcv['creator'].mention, pcv['prefix']))
@@ -433,17 +433,17 @@ async def create_join_channels(client):
                     overwrites[k] = v
 
                     try:
-                        jc = await guild.create_voice_channel("⇩ Join {}".format(creator),  # TODO creator can change
+                        jc = await guild.create_voice_channel("⇩ Katıl {}".format(creator),  # TODO creator can change
                                                               category=vc.category,
                                                               overwrites=overwrites)
                     except discord.errors.Forbidden:
                         to_remove.append(pc)
                         try:
                             await pcv['text_channel'].send(
-                                ":warning: {} I don't have permission to make the \"⇩ Join\" channel for you anymore."
+                                ":warning: {} Artık sizin için \"⇩ Katıl\" kanalı yapma iznim yok."
                                 "".format(pcv['creator'].mention))
                         except:
-                            log("Failed to create join-channel, and failed to notify {}".format(creator))
+                            log("Birleştirme kanalı oluşturulamadı ve {}'e bildirilemedi".format(creator))
                             break
                     utils.permastore_secondary(jc.id)
                     settings['auto_channels'][p]['secondaries'][s]['jc'] = jc.id
@@ -701,8 +701,6 @@ class MyClient(discord.AutoShardedClient):
         for s in shards:
             print("s{}: {} guilds".format(s, shards[s]))
         print('=' * 24)
-
-        await func.admin_log("🟥🟧🟨🟩   **Ready**   🟩🟨🟧🟥", self)
 
 
 heartbeat_timeout = cfg.CONFIG['heartbeat_timeout'] if 'heartbeat_timeout' in cfg.CONFIG else 60
@@ -984,14 +982,14 @@ async def on_reaction_add(reaction, user):
                 except discord.errors.HTTPException:
                     pass
                 else:
-                    await j['msg'].edit(content="Désolé {}, votre demande de rejoindre {} a été refusée.".format(
+                    await j['msg'].edit(content="Maalesef {}, {} katılma isteğiniz reddedildi.".format(
                         j['requester'].mention, j['creator'].mention
                     ))
                 if reaction.emoji == '⛔':
                     try:
                         await j['jc'].set_permissions(j['requester'], connect=False)
                     except Exception as e:
-                        await j['msg'].edit(content="{}\nImpossible de bloquer l'utilisateur ({}).".format(j['msg'].content,
+                        await j['msg'].edit(content="{}\nKullanıcı engellenemiyor ({}).".format(j['msg'].content,
                                                                                             type(e).__name__))
             if reacted:
                 to_delete.append(uid)
@@ -1078,10 +1076,10 @@ async def on_voice_state_update(member, before, after):
             if msg_channel and creator and vc:
                 try:
                     m = await msg_channel.send(
-                        "Salut {},\n{} souhaite rejoindre votre chaîne vocale privée. Réagissez avec:\n"
-                        "• ✅ **autoriser**.\n"
-                        "• ❌ **refuser** cette fois.\n"
-                        "• ⛔ **refuser** et **bloquer** de futures demandes de leur part.".format(
+                        "Merhaba {},\n{} özel ses kanalınıza katılmak istiyor. İle reaksiyona gir:\n"
+                        "• ✅ **izin ver**.\n"
+                        "• ❌ bu zaman **reddet**.\n"
+                        "• ⛔ **reddet** ve ** engelle** onlardan gelecek istekler.".format(
                             creator.mention, member.mention
                         )
                     )
@@ -1093,7 +1091,7 @@ async def on_voice_state_update(member, before, after):
                         "msg": m,
                         "mid": m.id
                     }
-                    log("{} ({}) demandes d'adhésion {}".format(
+                    log("{} ({}) üyelik istekleri {}".format(
                         member.display_name, member.id, creator.display_name), guild)
                     try:
                         await m.add_reaction('✅')
@@ -1102,7 +1100,7 @@ async def on_voice_state_update(member, before, after):
                     except discord.errors.Forbidden:
                         pass
                 except Exception as e:
-                    log("Échec de l'envoi du message de demande de jointure ({})".format(type(e).__name__), guild)
+                    log("Katılma isteği mesajı gönderilemedi ({})".format(type(e).__name__), guild)
                 else:
                     cfg.JOINS_IN_PROGRESS[member.id]
 
@@ -1131,9 +1129,9 @@ async def on_guild_join(guild):
         settings = utils.get_serv_settings(guild)
         settings['left'] = False
         utils.set_serv_settings(guild, settings)
-        log("Joined guild {} `{}` with {} members".format(guild.name, guild.id, num_members))
+        log("{} Üyeleriyle {} `{}` loncaya katıldı".format(guild.name, guild.id, num_members))
     await func.admin_log(
-        ":bell:{} Joined: **{}** (`{}`) - **{}** members".format(
+        ":bell:{} Katıldı: **{}** (`{}`) - **{}** üyeler".format(
             utils.guild_size_icon(num_members),
             func.esc_md(guild.name),
             guild.id,
@@ -1149,9 +1147,9 @@ async def on_guild_remove(guild):
         settings = utils.get_serv_settings(guild)
         settings['left'] = datetime.now(pytz.timezone(cfg.CONFIG['log_timezone'])).strftime("%Y-%m-%d %H:%M")
         utils.set_serv_settings(guild, settings)
-        log("Left guild {} `{}` with {} members".format(guild.name, guild.id, num_members))
+        log("{} Üyeleriyle {} `{}` kaldı".format(guild.name, guild.id, num_members))
     await func.admin_log(
-        ":new_moon: Left: **{}** (`{}`) - **{}** members".format(
+        ":new_moon: Left: **{}** (`{}`) - **{}** üyeler".format(
             func.esc_md(guild.name),
             guild.id,
             num_members),

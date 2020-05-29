@@ -7,12 +7,12 @@ from time import time
 
 help_text = [
     [
-        ("Usage:", "<PREFIX><COMMAND>"),
-        ("Description:",
-         "Rendez votre chaîne vocale privée, empêchant quiconque de vous rejoindre directement.\n\n"
-         "Crée un canal \"⇩ Rejoignez (username)\" au-dessus du vôtre afin que les gens puissent demander à vous rejoindre "
-         "Lorsque quelqu'un rejoint cette chaîne, je vous envoie un message vous demandant de"
-         "accepter/refuser/bloquer leur demande."),
+        ("kullanım:", "<PREFIX><COMMAND>"),
+        ("Açıklama:",
+         "Ses kanalınızı gizli hale getirerek kimsenin size doğrudan ulaşmasını önleyin.\n\n"
+         "İnsanların size katılmasını isteyebilmeleri için kendinizin üstünde bir \"⇩ Katıl (kullanıcı adı)\" kanalı oluşturun "
+         "Birisi bu kanala katıldığında sana bir mesaj gönderirim"
+         "kabul et/reddet/engelle."),
     ]
 ]
 
@@ -27,14 +27,14 @@ async def execute(ctx, params):
         for s, sv in pv['secondaries'].items():
             if s == vc.id:
                 if 'priv' in sv and sv['priv']:
-                    return False, ("Votre chaîne est déjà privée."
-                                   "Utilisez `{}public` pour le rendre à nouveau public.".format(ctx['print_prefix']))
+                    return False, ("Kanalınız zaten özel."
+                                   "kullanım `{}public` kanalı herkese açmak için.".format(ctx['print_prefix']))
                 try:
                     await vc.set_permissions(author, connect=True)
                     await vc.set_permissions(guild.default_role, connect=False)
                 except discord.errors.Forbidden:
-                    return False, ("I don't have permission to do that."
-                                   "Please make sure I have the *Manage Roles* permission in this server and category.")
+                    return False, ("Bunu yapmak için iznim yok."
+                                   "Lütfen bu sunucuda ve kategoride *Rolleri Yönet* iznine sahip olduğumdan emin olun.")
                 settings['auto_channels'][p]['secondaries'][s]['priv'] = True
                 settings['auto_channels'][p]['secondaries'][s]['msgs'] = ctx['channel'].id
                 utils.set_serv_settings(guild, settings)
@@ -47,13 +47,13 @@ async def execute(ctx, params):
                     'request_time': time(),
                     'prefix': ctx['print_prefix'],
                 }
-                return True, ("Votre canal est désormais privée!\n"
-                              "Un canal \"**⇩ Rejoignez {}**\" chaîne apparaîtra au-dessus de votre chaîne sous peu. "
-                              "Lorsque quelqu'un entre sur ce canal pour demander à vous rejoindre, "
-                              "Je vais envoyer un message ici vous demandant d'approuver ou de refuser leur demande.\n"
-                              "Utilisez `{}public` pour le rendre à nouveau public."
+                return True, ("Kanalınız artık özel!\n"
+                              "Kısa bir süre kanalınızın üzerinde \"**⇩ Katıl {}**\" kanalı görünecektir. "
+                              "Birisi size katılmasını istemek için bu kanala girdiğinde, "
+                              "Buraya, isteğini onaylamanızı veya reddetmenizi isteyen bir mesaj göndereceğim.\n"
+                              "kullanım `{}public` kanalı herkese açmak için.."
                               "".format(func.esc_md(author.display_name), ctx['print_prefix']))
-    return False, "It doesn't seem like you're in a voice channel anymore."
+    return False, "Artık bir ses kanalındaymışsınız gibi görünmüyor."
 
 
 command = Cmd(

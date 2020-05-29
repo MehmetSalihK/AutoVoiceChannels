@@ -21,42 +21,42 @@ async def execute(ctx, params):
         support_server_id = 601015720200896512
         if not ctx['admin'] and ctx['guild'].id != support_server_id:
             e = discord.Embed(color=discord.Color.from_rgb(205, 220, 57))
-            e.title = "Auto Voice Channels"
+            e.title = "Otomatik Ses Kanalları"
             e.description = (
-                "I'm a bot that allows you to dynamically and infinitely create voice channels as you need them, "
-                "and automatically delete them as soon as they are no longer used.\n\n"
-                "Simply join a voice channel of mine and I'll create a new one for you and move you to it."
+                "Sesli olarak istediğiniz kadar dinamik ve sonsuz ses kanalı oluşturmanızı sağlayan bir botum, "
+                "ve artık kullanılmadıkları anda otomatik olarak silebilirler.\n\n"
+                "Sadece bir ses kanalına katılın, ben de sizin için yeni bir kanal oluşturacağım ve sizi buna taşıyacağım."
             )
             text = (
-                " ·  **<PREFIX>lock** - "
-                "Lock the user limit of your voice channel so no more people can join. "
-                "Use **<PREFIX>unlock** to remove the limit.\n\n"
-                " ·  **<PREFIX>limit `N`** - "
-                "Set the user limit of your channel to a particular number. "
-                "Use **<PREFIX>unlock** to remove the limit.\n\n"
-                " ·  **<PREFIX>private** - "
-                "Make your voice channel private, preventing anyone from joining you directly. "
-                "Creates a \"⇩ Join {}\" channel above yours so people can request to join you.\n\n"
+                " ·  **<PREFIX>kilit** - "
+                "Daha fazla kişinin katılamayacağı şekilde ses kanalınızın kullanıcı sınırını kilitleyin. "
+                "Sınırı kaldırmak için **<PREFIX>unlock** kullanın.\n\n"
+                " ·  **<PREFIX>sınır `N`** - "
+                "Kanalınızın kullanıcı sınırını belirli bir sayıya ayarlayın. "
+                "Sınırı kaldırmak için **<PREFIX>unlock** kullanın.\n\n"
+                " ·  **<PREFIX>özel** - "
+                "Ses kanalınızı gizli hale getirerek kimsenin size doğrudan katılmasını önleyin. "
+                "Birileri sana katılmak için, üstünde bir \"⇩ Katıl {}\" kanalı oluşturur.\n\n"
                 " ·  **<PREFIX>kick `@USER`** - "
-                "Start a votekick to remove someone from your channel.\n\n"
-                " ·  **<PREFIX>transfer `@USER`** - "
-                "Transfer ownership of your channel to someone else.\n\n".format(
+                "Birini kanalınızdan atmak için bir oy kullanma başlatın.\n\n"
+                " ·  **<PREFIX>aktar `@USER`** - "
+                "Kanalınızın sahipliğini başka birine aktarın.\n\n".format(
                     esc_md(author.display_name)
                 )
             )
             if ctx['gold']:
                 text += (
-                    " ·  **<PREFIX>name** - Change the name of your voice channel.\n\n"
-                    " ·  **<PREFIX>nick** - Set what channels that show the creator's name will call you.\n\n"
-                    " ·  **<PREFIX>bitrate** - Set a server-wide custom bitrate (in kbps) for yourself that will be "
-                    "used for any channels you join.\n\n"
+                    " ·  **<PREFIX>isim** - Ses kanalınızın adını değiştirme.\n\n"
+                    " ·  **<PREFIX>nick** - İçerik oluşturucunun adını gösteren kanalların sizi arayacağını belirleyin.\n\n"
+                 #   " ·  **<PREFIX>bithızı** - Kendiniz için sunucu genelinde özel bir bit hızı (kbps cinsinden) ayarlayın. katıldığınız tüm "
+                 #  "kanallar için kullanılır.\n\n"
                 )
             text += (
-                " ·  **<PREFIX>invite** - Invite me to another server!\n\n"
-                " ·  **<PREFIX>help `command`** - Get more info about a particular command."
+                " ·  **<PREFIX>davet** - Beni başka bir sunucuya davet et!\n\n"
+                " ·  **<PREFIX>help `komut`** - Belirli bir komut hakkında daha fazla bilgi edinin."
             )
             text = text.replace('<PREFIX>', ctx['print_prefix'])
-            e.add_field(name="Commands:", value=text)
+            e.add_field(name="Komutlar:", value=text)
             try:
                 await channel.send(embed=e)
             except discord.errors.Forbidden:
@@ -79,7 +79,7 @@ async def execute(ctx, params):
             s = s.replace(" :)", " :slight_smile:")
             s = s.replace("**Gold Patron**", ":credit_card: **Gold Patron**")
             s = s.replace("Change the prefix of the bot (default is", "Change the prefix of the bot (currently")
-            s = s.replace("<https://www.patreon.com/pixaal>", "https://www.patreon.com/pixaal")  # Always embed
+           # s = s.replace("<https://www.patreon.com/pixaal>", "https://www.patreon.com/pixaal")  # Always embed
             if s.startswith("\n**-- Commands --**\n") and can_embed:
                 lines = [l for l in s.split('\n') if l != ""]
                 parts = []
@@ -105,7 +105,7 @@ async def execute(ctx, params):
                         cmd_name, cmd_desc = c.split(" - ", 1)
                         embed.add_field(name=" ·  " + cmd_name, value=cmd_desc)
                     try:
-                        await channel.send(content=p[0].replace("Commands --**", "Commands --**\n"), embed=embed)
+                        await channel.send(content=p[0].replace("Komutlar --**", "Komutlar --**\n"), embed=embed)
                     except discord.errors.Forbidden:
                         log("Forbidden to echo", channel.guild)
                         await dm_user(
@@ -117,7 +117,7 @@ async def execute(ctx, params):
                 continue
             if i == 0:
                 s = '\n'.join(s.strip('\n').split('\n')[:-1])  # Remove last line of first section (gfycat embed)
-                s += "\nhttps://gfycat.com/latemealyhoneyeater"
+               # s += "\nhttps://gfycat.com/latemealyhoneyeater"
             else:
                 s = '** **' + s
             echo_success = await echo(s, channel, author)
@@ -138,9 +138,9 @@ async def execute(ctx, params):
                 e = discord.Embed(color=discord.Color.from_rgb(205, 220, 57))
                 content = None
                 if 'incorrect_command_usage' in ctx and part == help_text[0]:
-                    content = "Incorrect command usage, here's some info about the `{}` command:".format(c)
+                    content = " ".format(c)
                 if part == help_text[-1]:
-                    e.set_footer(text="More help: discord.io/DotsBotsSupport  \nSupport me: patreon.com/pixaal",
+                    e.set_footer(text="Daha fazla yardım: discord.io/TurkServerSunucusu",
                                  icon_url=ctx['guild'].me.avatar_url_as(size=32))
                 for i, p in enumerate(part):
                     t = ("⠀\n" + p[0]) if i != 0 and not p[0].startswith(" ·  ") else p[0]
@@ -167,19 +167,19 @@ async def execute(ctx, params):
                     print(traceback.format_exc())
                     return False, "NO RESPONSE"
 
-            if commands[c].sapphire_required and not ctx['sapphire']:
-                await channel.send(
-                    "**Note:** This command is restricted to :gem: **Sapphire Patron** servers.\n"
-                    "Become a Sapphire Patron to support the development of this bot and unlock more ~~useless~~ "
-                    "amazing features: <https://www.patreon.com/pixaal>"
-                )
-            elif commands[c].gold_required and not ctx['gold']:
-                await channel.send(
-                    "**Note:** This command is restricted to :credit_card: **Gold Patron** servers.\n"
-                    "Become a Gold Patron to support the development of this bot and unlock more ~~useless~~ "
-                    "amazing features: <https://www.patreon.com/pixaal>"
-                )
-            return True, "NO RESPONSE"
+          #  if commands[c].sapphire_required and not ctx['sapphire']:
+          #      await channel.send(
+          #          "**Note:** This command is restricted to :gem: **Sapphire Patron** servers.\n"
+          #          "Become a Sapphire Patron to support the development of this bot and unlock more ~~useless~~ "
+          #          "amazing features: <https://www.patreon.com/pixaal>"
+          #      )
+          #  elif commands[c].gold_required and not ctx['gold']:
+          #      await channel.send(
+          #          "**Note:** This command is restricted to :credit_card: **Gold Patron** servers.\n"
+          #          "Become a Gold Patron to support the development of this bot and unlock more ~~useless~~ "
+          #          "amazing features: <https://www.patreon.com/pixaal>"
+          #      )
+          #  return True, "NO RESPONSE"
         elif c == 'expressions':
             e = discord.Embed(color=discord.Color.from_rgb(205, 220, 57))
             e.title = "Template Expressions"
@@ -244,7 +244,7 @@ async def execute(ctx, params):
                 )
                 return False, "NO RESPONSE"
             e = discord.Embed(color=discord.Color.from_rgb(205, 220, 57))
-            e.title = "Examples"
+            e.title = "Örnekler"
             e.description = (
                 "```{{GAME:Left 4 Dead ?? [@@num_playing@@/4]}}```"
                 "```{{LIVE??🔴 @@stream_name@@}}```"
@@ -254,11 +254,11 @@ async def execute(ctx, params):
                 "```{{RICH??@@party_details@@{{MAX>1?? (@@num_playing@@/@@party_size@@)}}}}```"
                 "```{{ROLE:601025860614750229 ?? {{ROLE:615086491235909643??[UK] // {{ROLE:607913610139664444??[DE] // "
                 "[EU]}}}}}}```\n"
-                "The spaces around the `??` and `//` improve readability but may not be desired if you do not want any "
-                "spaces around the result.\n\n"
-                "If you have a question or need any help setting up an expression, "
-                "please ask me in the [support server](https://discord.io/DotsBotsSupport). "
-                "I'd be happy to add any extra variables you need."
+                "`??` ve `//` etrafındaki boşluklar okunabilirliği artırır, ancak istemiyorsanız istenmeyebilir "
+                "sonucun çevresindeki boşluklar.\n\n"
+                "Bir sorunuz varsa veya ifade ayarlamak için yardıma ihtiyacınız varsa, "
+                "lütfen bana [destek sunucusunda sor](https://discord.io/TurkServerSunucusu). "
+                "İhtiyacınız olan ekstra değişkenleri eklemekten memnuniyet duyarım."
             )
             await channel.send(embed=e)
             return True, "NO RESPONSE"

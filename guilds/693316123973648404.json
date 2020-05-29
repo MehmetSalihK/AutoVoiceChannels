@@ -1,0 +1,45 @@
+{
+ "aliases":{},
+ "auto_channels":{
+  "715673921617133579":{
+   "secondaries":{}
+  },
+  "715682075016953979":{
+   "secondaries":{}
+  },
+  "715688804832247828":{
+   "secondaries":{}
+  },
+  "715867324703571998":{
+   "secondaries":{}
+  },
+  "715875837966286859":{
+   "above":false,
+   "secondaries":{}
+  },
+  "715876076404080691":{
+   "secondaries":{}
+  },
+  "715905432928911370":{
+   "secondaries":{}
+  },
+  "715912882373525524":{
+   "secondaries":{
+    "715919639775019039":{
+     "creator":681605101064159289,
+     "dying":2
+    }
+   }
+  }
+ },
+ "channel_name_template":"## [@@game_name@@]",
+ "enabled":true,
+ "guild_name":"BOT TEST",
+ "last_activity":1590759113,
+ "last_channel":711817999048245328,
+ "left":false,
+ "prefix":"-",
+ "requiredrole":"",
+ "server_contact":428233517483425793,
+ "text_channels":true
+}

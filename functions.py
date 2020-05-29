@@ -145,7 +145,7 @@ def toggle_position(guild, chid):
 @utils.func_timer()
 def get_channel_games(channel):
     settings = utils.get_serv_settings(channel.guild)
-    general = ["General"] if 'general' not in settings else [settings['general']]
+    general = ["Genel"] if 'general' not in settings else [settings['general']]
     games = {}
     for m in sorted(channel.members, key=lambda x: x.display_name.lower()):
         if not m.bot:
@@ -728,7 +728,7 @@ async def set_creator(guild, cid, creator):
                 settings['auto_channels'][p]['secondaries'][s]['creator'] = creator.id
                 try:
                     jc = guild.get_channel(settings['auto_channels'][p]['secondaries'][s]['jc'])
-                    await jc.edit(name="⇩ Join {}".format(creator.display_name))
+                    await jc.edit(name="⇩ Katıl {}".format(creator.display_name))
                 except (KeyError, AttributeError):
                     pass
                 if s in cfg.PRIV_CHANNELS:
@@ -1263,11 +1263,11 @@ async def create_secondary(guild, primary, creator, private=False):
             if showto_r:
                 overwrites[showto_r] = discord.PermissionOverwrite(read_messages=True)
         tc = await guild.create_text_channel(
-            utils.nice_cname(settings['text_channel_name']) if 'text_channel_name' in settings else "voice context",
+            utils.nice_cname(settings['text_channel_name']) if 'text_channel_name' in settings else "Genel",
             category=primary.category,
             overwrites=overwrites,
-            topic=(":eye: This channel is only visible to members of your voice channel, "
-                   "and admins of this server. It will be deleted when everyone leaves. VC ID: {}".format(c.id)))
+            topic=(":eye: Bu kanal yalnızca ses kanalınızın üyeleri tarafından görülebilir, "
+                   "ve bu sunucunun yöneticileri. Herkes gittiğinde silinecek. VC Kimliği: {}".format(c.id)))
         settings = utils.get_serv_settings(guild)
         settings['auto_channels'][primary.id]['secondaries'][c.id]['tc'] = tc.id
         settings['auto_channels'][primary.id]['secondaries'][c.id]['tcr'] = r.id

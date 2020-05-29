@@ -1,0 +1,9 @@
+{
+ "aliases":{},
+ "auto_channels":{},
+ "channel_name_template":"## [@@game_name@@]",
+ "enabled":true,
+ "guild_name":"sa",
+ "last_channel":683773614612545611,
+ "requiredrole":""
+}

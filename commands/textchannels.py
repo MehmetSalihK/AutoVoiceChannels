@@ -30,13 +30,13 @@ async def execute(ctx, params):
     settings['text_channels'] = textchannels
     utils.set_serv_settings(guild, settings)
     if textchannels:
-        r = "OK, from now on I'll create private text channels for each voice chat."
+        r = "Tamam, bundan sonra her sesli sohbet için özel metin kanalları oluşturacağım."
         perms = guild.me.permissions_in(ctx['channel'])
         if not perms.manage_roles:
-            r += ("\n:warning: Make sure I have the **Manage Roles** permission in this server and any categories that "
-                  "contain my voice channels, otherwise I won't be able to make the text channels.")
+            r += ("\n:warning: Bu sunucuda ve Rollerde **Rolleri Yönet** iznine sahip olduğumdan emin olunt "
+                  "Ses kanallarımı içerir, aksi takdirde metin kanallarını oluşturamayacağım.")
     else:
-        r = "Text channel creation is now **OFF** :)"
+        r = "Metin kanalı oluşturma şimdi **KAPALI** :)"
     return True, r
 
 

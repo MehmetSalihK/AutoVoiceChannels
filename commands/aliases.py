@@ -6,9 +6,9 @@ from utils import log
 
 help_text = [
     [
-        ("Usage:", "<PREFIX><COMMAND>"),
-        ("Description:",
-         "List all of the aliases for game names in this server."),
+        ("kullanım:", "<PREFIX><COMMAND>"),
+        ("Açıklama:",
+         "Bu sunucudaki oyun adları için tüm diğer adları listeleyin."),
     ]
 ]
 
@@ -19,13 +19,13 @@ async def execute(ctx, params):
     author = ctx['message'].author
 
     if not settings['aliases']:
-        return True, "You haven't set any aliases yet."
+        return True, "Henüz takma ad belirlemediniz."
 
     e = discord.Embed(color=discord.Color.from_rgb(205, 220, 57))
-    e.title = "This server has the following aliases:"
+    e.title = "Bu sunucu aşağıdaki takma adlara sahip:"
     e.set_footer(
-        text="Use \"{0}removealias ORIGINAL NAME\" to delete an alias, "
-        "or \"{0}alias ORIGINAL NAME >> NEW NAME\" to create or replace one.".format(ctx['print_prefix']))
+        text="Bir takma adı silmek için \"{0}removealias ORİJİNAL ADI\" kullanın, "
+        "veya \"{0}alias ORİJİNAL ADI >> YENİ AD\" oluşturmak veya değiştirmek için.".format(ctx['print_prefix']))
 
     keys = sorted(settings['aliases'].keys(), key=lambda x: x.lower())
     for a in keys:
@@ -34,15 +34,15 @@ async def execute(ctx, params):
     try:
         await channel.send(embed=e)
     except discord.errors.Forbidden:
-        log("Forbidden to echo", channel.guild)
+        log("Yankılamak yasak", channel.guild)
         await func.dm_user(
             author,
-            "I don't have permission to send messages in the "
-            "`#{}` channel of **{}**.".format(channel.name, channel.guild.name)
+            "İçinde mesaj gönderme iznim yok "
+            "**{}** kanalının `#{}` kanalı.".format(channel.name, channel.guild.name)
         )
         return False, "NO RESPONSE"
     except Exception:
-        log("Failed to echo", channel.guild)
+        log("Yankılamadı", channel.guild)
         print(traceback.format_exc())
         return False, "NO RESPONSE"
 

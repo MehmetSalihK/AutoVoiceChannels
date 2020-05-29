@@ -19,7 +19,6 @@ from . import (
     general,
     help_cmd,
     inheritpermissions,
-    invite,
     kick,
     limit,
     listroles,
@@ -62,23 +61,22 @@ commands = {
     "ecnf": ecnf.command,
     "enable": enable.command,
     "general": general.command,
-    "help": help_cmd.command,
+    "vchelp": help_cmd.command,
     "inheritpermissions": inheritpermissions.command,
-    "invite": invite.command,
     "kick": kick.command,
     "votekick": kick.command,
-    "limit": limit.command,
+    "sınır": limit.command,
     "listroles": listroles.command,
-    "lock": limit.command,
+    "kilit": limit.command,
     "logging": logging.command,
-    "name": name.command,
+    "isim": name.command,
     "nick": nick.command,
     "patreon": patreon.command,
     "ping": ping.command,
     "power-overwhelming": power_overwhelming.command,
     "poweroverwhelming": power_overwhelming.command,
-    "prefix": prefix.command,
-    "private": private.command,
+    "setprefix": prefix.command,
+    "özel": private.command,
     "public": public.command,
     "removealias": removealias.command,
     "rename": rename.command,
@@ -91,7 +89,7 @@ commands = {
     "textchannelname": textchannelname.command,
     "textchannels": textchannels.command,
     "toggleposition": toggleposition.command,
-    "transfer": transfer.command,
+    "aktar": transfer.command,
     "uniquenames": uniquenames.command,
     "unlimit": unlimit.command,
     "unlock": unlimit.command,
@@ -107,8 +105,8 @@ async def run(c, ctx, params):
         if 'dcnf' not in ctx['settings'] or ctx['settings']['dcnf'] is False:
             similar = sorted(commands, key=lambda x: SequenceMatcher(None, x, c).ratio(), reverse=True)[0]
             ratio = SequenceMatcher(None, similar, c).ratio()
-            return False, "Sorry, `{}` is not a recognised command.{}".format(
-                c, " Did you mean `{}{}`?".format(ctx['print_prefix'], similar) if ratio > 0.65 else "")
+            return False, " ".format(
+                c, " ".format(ctx['print_prefix'], similar) if ratio > 0.65 else "")
         else:
             return False, "NO RESPONSE"
 
@@ -138,7 +136,7 @@ async def run(c, ctx, params):
         if v is not None and v.channel.id in get_secondaries(ctx['guild'], ctx['settings']):
             ctx['voice_channel'] = v.channel
         else:
-            return False, "You need to be in one of my voice channels to use that command."
+            return False, "Bu komutu kullanabilmek için ses kanallarımdan birinde olmanız gerekiyor."
 
     if cmd.creator_only:
         vc = ctx['voice_channel']  # all creator_only commands will also have voice_required

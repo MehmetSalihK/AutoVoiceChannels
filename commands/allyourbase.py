@@ -4,12 +4,12 @@ from commands.base import Cmd
 
 help_text = [
     [
-        ("Usage:", "<PREFIX><COMMAND>"),
-        ("Description:",
-         "Assume ownership of the channel you're in.\n"
-         "As an admin you can already use all creator-only commands even if you're not actually the creator, "
-         "but this will now display you as the creator to everyone else.\n\n"
-         "Use `<PREFIX>transfer @USER` if you want to assign someone else as the creator."),
+        ("kullanım:", "<PREFIX><COMMAND>"),
+        ("Açıklama:",
+         "Bulunduğunuz kanalın sahipliğini varsayalım.\n"
+         "Yönetici olarak, aslında içerik oluşturucu olmasanız bile yalnızca içerik oluşturucuya ait tüm komutları kullanabilirsiniz, "
+         "ancak bu sizi diğer herkesin yaratıcısı olarak gösterecektir.\n\n"
+         "Yaratıcı olarak başka birini atamak istiyorsanız `<PREFIX>aktar @KULLANICI` kullanın."),
     ]
 ]
 
@@ -22,7 +22,7 @@ async def execute(ctx, params):
     creator_id = utils.get_creator_id(ctx['settings'], vc)
 
     if author.id == creator_id:
-        return False, "You're already the creator."
+        return False, "Sen zaten yaratıcısın."
 
     result = await func.set_creator(guild, vc.id, author)
     return result, None

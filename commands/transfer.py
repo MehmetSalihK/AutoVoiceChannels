@@ -4,12 +4,12 @@ from commands.base import Cmd
 
 help_text = [
     [
-        ("Usage:", "<PREFIX><COMMAND> `@USER`"),
-        ("Description:",
-         "Transfer ownership of your channel to someone else in the channel, allowing them to use commands that "
-         "require them to be the creator (e.g. `private`, `limit`, `name`...)."),
-        ("Examples:",
-         "```<PREFIX><COMMAND> @pixaal```"),
+        ("kullanım:", "<PREFIX><COMMAND> `@USER`"),
+        ("Açıklama:",
+         "Kanalınızın sahipliğini kanaldaki başka birine aktarın; "
+         "içerik oluşturucu olmalarını zorunlu kılar (ör. `özel`, `limit`, 'ad`...)."),
+        ("Örnekler:",
+         "```<PREFIX><COMMAND> @MehmetSalihK```"),
     ]
 ]
 
@@ -23,12 +23,12 @@ async def execute(ctx, params):
     user = utils.get_user_in_channel(name, vc)
 
     if not user:
-        return False, "Can't find any user in your channel with the name \"{}\".".format(name)
+        return False, "Kanalınızda \"{}\" adında herhangi bir kullanıcı bulunamıyor.".format(name)
     if user.id == ctx['creator_id']:
         if user == author:
-            return False, "You're already the creator."
+            return False, "Sen zaten yaratıcısın."
         else:
-            return False, "{} is already the creator.".format(func.user_hash(user))
+            return False, "{} zaten yaratıcı.".format(func.user_hash(user))
 
     result = await func.set_creator(guild, vc.id, user)
     return result, None
